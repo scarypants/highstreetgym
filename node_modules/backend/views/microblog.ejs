@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include("partials/head.ejs") %>
+    <title>High Street Gym - Microblog</title>
+</head>
+<body>
+    <%- include("partials/header.ejs", authenticatedUser) %>
+    <main>
+        <section>
+            <% if (authenticatedUser != "guest") { %>
+                <form action="/microblog/" method="post">
+                    <input type="text" name="subject" id="post-subject" placeholder="Subject" class="i-large">
+                    <textarea name="content" id="post-content" class="microblog-content" placeholder="Share your thoughts..."></textarea>
+                    <input type="submit" name="action" value="Post" class="btn-large-regular">
+                </form>
+            <% } %>
+        </section>
+        <section>
+            <article class="microblog-bg">
+                <% for (postWithWriter of postsWithWriter) { %>
+                    <section class="microblog-post">
+                        <section class="microblog-post-subject">
+                            <h4><%= postWithWriter.post.subject %></h4>
+                            <% if (authenticatedUser.role == "admin" || authenticatedUser.id == postWithWriter.user.id) { %>
+                                <form action="/microblog/<%= postWithWriter.post.id %>" method="post">
+                                    <input type="submit" value="X">
+                                </form>
+                            <% } %>
+                        </section>
+                        <section class="microblog-post-writer">
+                            <p><%= postWithWriter.user.firstName %></p>
+                            <p><%= postWithWriter.user.lastName %></p>
+                        </section>
+                        <section class="microblog-post-content">
+                            <p><%= postWithWriter.post.content %></p>
+                        </section>
+                    </section>
+                <% } %>
+            </article>
+            <% if (authenticatedUser == "guest") { %>
+                <button class="btn-large-regular"><a href="/auth"><h4>Back</h4></a></button>
+            <% } %>
+        </section>
+    </main>
+    <% if (authenticatedUser != "guest") { %>
+        <%- include("partials/nav.ejs", { role: authenticatedUser.role }) %> 
+    <% } %>
+</body>
+</html>

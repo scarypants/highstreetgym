@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sessions [
+    <!ELEMENT sessions (session*)>
+    <!ATTLIST sessions export-date CDATA "0000-00-00">
+    <!ELEMENT session (id, activity, date, time, location)>
+    <!ELEMENT id (#PCDATA)>
+    <!ELEMENT name (#PCDATA)>
+    <!ELEMENT activity (name)>
+    <!ELEMENT date (#PCDATA)>
+    <!ELEMENT time (#PCDATA)>
+    <!ELEMENT location (name)>
+    
+]>
+<sessions export-date="<%= date %>">
+    <% for (const session of sessions) { %>
+    <session>
+        <id><%= session.session.id %></id>
+        <activity>
+            <name><%= session.activity.name %></name>
+        </activity>
+        <date><%= session.session.date %></date>
+        <time><%= session.session.time %></time>
+        <location>
+            <name><%= session.location.name %></name>
+        </location>
+    </session>
+    <% } %>
+</sessions>

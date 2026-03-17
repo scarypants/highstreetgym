@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include("partials/head.ejs") %>
+    <title>High Street Gym - Create Booking</title>
+</head>
+<body>
+    <%- include("partials/header.ejs", authenticatedUser) %>
+    <section class="main">
+        <section>
+            <h1>Create Booking</h1>
+        
+            <article class="create-bookings-info">
+                <h2><%= sessions[0].activity.name %></h2>
+                <h3><%= sessions[0].session.date %> <%= day %></h3>
+        
+                <form action="/booking/create" method="post">
+                    <input type="hidden" name="memberId" id="memberId" value="<%= authenticatedUser.id %>">
+                    <select name="sessionId" id="sessionId" class="i-select-large">
+                        <option value="" selected disabled hidden>Select session</option>
+                        <% for (const session of sessions) { %>
+                            <option value="<%= session.session.id %>">
+                                <%= session.session.time %>
+                                <%= session.location.name %>
+                                <%= session.user.firstName %>
+                                <%= session.user.lastName %>
+                            </option>
+                        <% } %>
+                    </select>
+                    <section class="sec-small">
+                        <button disabled class="btn-small-regular"><a href="/session/timetable"><h4>Back</h4></a></button>
+                        <input type="submit" name="action" value="Book" class="btn-small-medium">
+                    </section>
+                </form>
+            </article>
+        </section>
+        
+    </section>
+</body>
+</html>

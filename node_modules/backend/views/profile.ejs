@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include("partials/head.ejs") %>
+    <title>High Street Gym - Profile</title>
+</head>
+<body>
+    <%- include("partials/header.ejs", authenticatedUser) %>
+    <section class="main">
+        <section>
+            <h1>Profile</h1>
+            <input readonly class="o-large" type="text" name="role" id="role" value="<%= user.role %>">
+            <section class="profile-img">
+                <img src="/img/profile-img.png" alt="Profile">
+            </section>
+        </section>
+        <section>
+            <form action="/user/profile" method="post">
+                <input type="hidden" name="role" value="<%= authenticatedUser.role %>">
+                <section class="sec-small">
+                    <input type="text" name="firstName" id="firstName" class="i-small" value="<%= user.firstName %>">
+                    <input type="text" name="lastName" id="lastName" class="i-small" value="<%= user.lastName %>">
+                </section>
+                <input type="text" name="email" id="email" class="i-large" value="<%= user.email %>">
+                <input type="password" name="password" id="password" class="i-large" value="<%= user.password %>">
+    
+                <section class="sec-small">
+                    <button disabled class="btn-small-regular"><a href="/microblog"><h4>Back</h4></a></button>
+                    <input class="btn-small-medium" type="submit" name="action" value="Save">
+                </section>
+            </form>
+            <button class="btn-large-regular"><a href="/auth/logout"><h4>Logout</h4></a></button>
+        </section>
+    </section>
+</body>
+</html>

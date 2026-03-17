@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include("partials/head.ejs") %>
+    <title>High Street Gym - Manage Users</title>
+</head>
+<body>
+    <%- include("partials/header.ejs", authenticatedUser) %>
+    <main>
+        <h1>Manage Users</h1>
+    </main>
+    <main>
+        <% if (selectedUser.id != null) { %>
+            <section>
+                <form action="/user/<%= selectedUser.id %>" method="post">
+                    <section class="sec-small">
+                        <input type="text" readonly name="id" id="id" value="<%= selectedUser.id %>" class="o-mini">
+                        <select name="role" id="role" class="i-select-regular">
+                            <option value="admin" <%= selectedUser.role == "admin" ? "selected" : "" %>>Admin</option>
+                            <option value="trainer" <%= selectedUser.role == "trainer" ? "selected" : "" %>>Trainer</option>
+                            <option value="member" <%= selectedUser.role == "member" ? "selected" : "" %>>Member</option>
+                        </select>
+                    </section>
+                    <section class="sec-small">
+                        <input type="text" readonly name="firstName" id="first-name" value="<%= selectedUser.firstName %>" placeholder="First Name" class="o-small">
+                        <input type="text" readonly name="lastName" id="last-name" value="<%= selectedUser.lastName %>" placeholder="Last name" class="o-small">
+                    </section>
+                    <input type="text" readonly name="email" id="email" value="<%= selectedUser.email %>" placeholder="Email" class="o-large">
+                    <input type="password" readonly name="password" id="password" value="<%= selectedUser.password %>" placeholder="Password" class="o-large">
+                    
+                    <section class="sec-small">
+                        <input type="submit" name="action" value="Delete" class="btn-small-regular">
+                        <input type="submit" name="action" value="Update" class="btn-small-medium">
+                    </section>
+                </form>
+            </section>
+            <section>
+                <article class="management-bg">
+                    <% for (user of users) { %>
+                        <section class="management-list">
+                            <a href="/user/<%= user.id %>">
+                                <span>
+                                    <p><%= user.id %></p>
+                                    <p><%= user.firstName %></p>
+                                    <p><%= user.lastName %></p>
+                                    <p><%= user.role %></p>
+                                </span>
+                            </a>
+                        </section>
+                    <% } %>
+                </article>
+                <button class="btn-large-regular"><a href="/microblog"><h4>Back</h4></a></button>
+            </section>
+        <% } else { %> 
+            <section>
+                <article class="large-list-bg">
+                    <% for (user of users) { %>
+                        <section class="management-list">
+                            <a href="/user/<%= user.id %>">
+                                <span>
+                                    <p><%= user.id %></p>
+                                    <p><%= user.firstName %></p>
+                                    <p><%= user.lastName %></p>
+                                    <p><%= user.role %></p>
+                                </span>
+                            </a>
+                        </section>
+                    <% } %>
+                </article>
+                <button class="btn-large-regular"><a href="/microblog"><h4>Back</h4></a></button>
+            </section>
+        <% } %>        
+    </main>
+
+    <%- include("partials/management_nav.ejs") %>
+</body>
+</html>

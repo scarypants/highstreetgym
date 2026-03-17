@@ -1,0 +1,24 @@
+<header>
+    <% if (authenticatedUser != null && authenticatedUser != "guest") { %>
+        <a href="/microblog">
+            <section class="sec-logo">
+                <img src="\img\logo.png" alt="Logo" class="logo-img">
+                <h3 class="logo">High Street Gym</h3>
+            </section>
+        </a>
+    <% } else if (authenticatedUser == "guest") { %>
+        <a href="/microblog/guest">
+            <section class="sec-logo">
+                <img src="\img\logo.png" alt="Logo" class="logo-img">
+                <h3 class="logo">High Street Gym</h3>
+            </section>
+        </a>
+    <% } else { %>
+        <a href="/auth">
+            <section class="sec-logo">
+                <img src="\img\logo.png" alt="Logo" class="logo-img">
+                <h3 class="logo">High Street Gym</h3>
+            </section>
+        </a>
+    <% } %>
+</header>
