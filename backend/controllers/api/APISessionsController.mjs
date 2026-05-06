@@ -205,7 +205,7 @@ export class APISessionsController {
      *                                                          example: "YOGA"
      *                                              date:
      *                                                  type: string
-     *                                                  pattern: '^(0[1-9]|[12]\d|3[01])/(0[1-9]|1[0-2])/\d{4}$'
+     *                                                  pattern: '^(\d{4}/(0[1-9]|1[0-2])/(0[1-9]|[12]\d|3[01]))$'
      *                                                  example: "11/05/2025"
      *                                              time:
      *                                                  type: string

@@ -17,7 +17,7 @@ function partitionByDayAndActivity(sessions) {
     }
 
     for (const session of sessions) {
-        const [dd, mm, yyyy] = session.session.date.split("/")
+        const [yyyy, mm, dd] = session.session.date.split("/")
         const date = new Date(
             parseInt(yyyy,10),
             parseInt(mm,10)-1,
@@ -31,9 +31,9 @@ function partitionByDayAndActivity(sessions) {
 }
 
 function toLocaleDateString(date) {
-    const year = date.toLocaleString('en-AU', { year: 'numeric' });
-    const month = date.toLocaleString('en-AU', { month: '2-digit' })
-    const day = date.toLocaleString('en-AU', { day: '2-digit' });
+    const year = date.getFullYear()
+    const month = String(date.getMonth() + 1).padStart(2, '0')
+    const day = String(date.getDate()).padStart(2, '0')
 
     return [year, month, day].join('-');
 }
@@ -60,6 +60,8 @@ function WeeklyTimetableView() {
         const sundayOfThisWeek = new Date(mondayOfThisWeek)
         sundayOfThisWeek.setDate(mondayOfThisWeek.getDate() + 6)
         const endDate = toLocaleDateString(sundayOfThisWeek)
+
+        console.log(JSON.stringify(startDate))
 
         fetchAPI("GET", `/sessions?start_date=${startDate}&end_date=${endDate}`, null, user.authenticationKey)
             .then(response => {

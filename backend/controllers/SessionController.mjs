@@ -63,7 +63,7 @@ export class SessionController {
      * 1. Calculates the Monday and Sunday dates for the current week.
      * 2. Initializes an object with keys for each day of the week.
      * 3. Fetches sessions between Monday and Sunday using SessionModel.getByDate.
-     * 4. For each session, converts the date from "DD/MM/YYYY" to a Date object.
+     * 4. For each session, converts the date from "YYYY/MM/DD" to a Date object.
      * 5. Determines the day name for each session (with Sunday handled separately).
      * 6. Groups sessions by day and by their activityId.
      * If no sessions are found, an object with empty groups is returned.
@@ -94,8 +94,8 @@ export class SessionController {
         // Group sessions by day and activityId if sessions are found.
         if (sessionsOnThisWeek != "not found") {
             for (const session of sessionsOnThisWeek) {
-                // Convert session.date from "DD/MM/YYYY" to a Date object.
-                const [dayStr, monthStr, yearStr] = session.date.split("/")
+                // Convert session.date from "YYYY/MM/DD" to a Date object.
+                const [yearStr, monthStr, dayStr] = session.date.split("/")
                 const sessionDate = new Date(yearStr, monthStr - 1, dayStr)
                 if (isNaN(sessionDate.getTime())) continue
 
@@ -327,7 +327,7 @@ export class SessionController {
                     sessionsByDay[day][activity.id] = []
                 }
             }
-
+            
             // Retrieve sessions for the current week.
             const sessionsOnThisWeek = await SessionModel.getByDate(mondayOfThisWeek, sundayOfThisWeek)
             // Retrieve session details for the logged-in trainer.
@@ -339,8 +339,8 @@ export class SessionController {
                     // Find matching session from this week.
                     const matchedSessions = sessionsOnThisWeek.filter(s => s.id == session.session.id)
                     matchedSessions.forEach(sessionOnThisWeek => {
-                        // Convert date from "DD/MM/YYYY" to Date object.
-                        const [dayStr, monthStr, yearStr] = sessionOnThisWeek.date.split("/")
+                        // Convert date from "YYYY/MM/DD" to Date object.
+                        const [yearStr, monthStr, dayStr] = sessionOnThisWeek.date.split("/")
                         sessionOnThisWeek.date = new Date(yearStr, monthStr - 1, dayStr)
 
                         // Determine the day name (if getDay() returns 0, then Sunday; otherwise adjust index).
@@ -444,7 +444,7 @@ export class SessionController {
      * It performs the following:
      * 1. Validates the optional session id from the URL.
      * 2. Validates that the activity id from the form is a valid number.
-     * 3. Validates that the date is in "DD/MM/YYYY" format and represents a date after today.
+     * 3. Validates that the date is in "YYYY/MM/DD" format and represents a date after today.
      * 4. Validates that the time is in "HH:MM" format.
      * 5. Validates that location and trainer ids are valid numbers.
      * 6. Converts the date string into a Date object.
@@ -492,10 +492,10 @@ export class SessionController {
             })
             return
         }
-        if (!formData.date || !/^(0[1-9]|[12]\d|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/.test(formData.date)) {
+        if (!formData.date || !/^\d{4}\/(0[1-9]|1[0-2])\/(0[1-9]|[12]\d|3[01])$/.test(formData.date)) {
             res.status(400).render("status.ejs", {
                 status: "Invalid input provided.",
-                message: "Please enter a valid date in the format DD/MM/YYYY."
+                message: "Please enter a valid date in the format YYYY/MM/DD."
             })
             return
         }
@@ -527,8 +527,8 @@ export class SessionController {
             return
         }
 
-        // Convert the date string from DD/MM/YYYY to a Date object.
-        const [day, month, year] = formData.date.split("/")
+        // Convert the date string from YYYY/MM/DD to a Date object.
+        const [year, month, day] = formData.date.split("/")
         const dateObj = new Date(year, month - 1, day)
 
         // Create a new SessionModel instance with the provided data.
